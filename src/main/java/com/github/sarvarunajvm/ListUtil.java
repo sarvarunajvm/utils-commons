@@ -1,6 +1,6 @@
 package com.github.sarvarunajvm;
 
-import dryutils.helper.NaturalSortOrder;
+import com.github.sarvarunajvm.helper.NaturalSortOrder;
 
 import java.util.*;
 
