@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DateUtil {
@@ -243,16 +245,13 @@ public class DateUtil {
         return object;
     }
 
-    public Date parseString(String dateString, String format) {
-        Date date = null;
-        DateFormat formatter = null;
-        if (StringUtil.isNotNullOrEmpty(dateString) && StringUtil.isNotNullOrEmpty(format)) {
-            try {
-                formatter = new SimpleDateFormat(format);
-                date = (Date) formatter.parse(dateString);
-            } catch (ParseException e) {
-                System.out.println("Exception :" + e);
-            }
+    public LocalDate parseString(String dateString, String format) {
+        LocalDate date = null;
+        DateTimeFormatter formatter = null;
+        if (StringUtil.isNotNullOrEmpty(dateString)
+                && StringUtil.isNotNullOrEmpty(format)) {
+            formatter = DateTimeFormatter.ofPattern(format);
+            date = LocalDate.parse(dateString, formatter);
             clearVariables(formatter);
         }
         return date;

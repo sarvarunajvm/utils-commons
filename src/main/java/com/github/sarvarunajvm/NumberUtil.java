@@ -64,10 +64,6 @@ public class NumberUtil {
     }
 
     public static String getBigDecString(BigDecimal decimal) {
-		/*String bidDecStr = "";
-		if(decimal != null){
-			bidDecStr = decimal.toString();
-		}*/
         return decimal.toString();
     }
 
@@ -107,10 +103,6 @@ public class NumberUtil {
         return d;
     }
 
-    /*public static Double getDoubleForIndianFormat(String value){
-        Double d = new Double(value);
-        return d;
-    }*/
     public static Double getDouble(Integer value) {
         Double d = null;
         if (value != null) {
@@ -211,7 +203,6 @@ public class NumberUtil {
         return Double.toString(value);
     }
 
-    //--------------Integer
     public static Integer getInteger(String str) {
         Integer value = null;
         if (StringUtil.isNotNullOrEmpty(str)) {
@@ -421,7 +412,6 @@ public class NumberUtil {
         try {
             return format.parse(value != null ? value : "0").doubleValue();
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return 0;
         }
@@ -431,7 +421,6 @@ public class NumberUtil {
         try {
             return format.parse(value != null ? value : "0").doubleValue();
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return 0;
         }
@@ -481,7 +470,6 @@ public class NumberUtil {
             try {
                 currencyIndian = new DecimalFormat("##,##,##,##,###.00").parse(value != null ? value : "0").doubleValue();
             } catch (ParseException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -579,42 +567,6 @@ public class NumberUtil {
             isEven = true;
         }
         return isEven;
-    }
-
-    public static void main(String[] args) {
-        //String formatNum = formatNum(1);
-        //System.out.println(formatNum);
-        //formatNum = formatNumByformat(2.3, DECIMAL_2_ROUNDOFF);
-		/*double str =1.99946;
-		try {
-			List<String> strs = null;
-			System.out.println(strs.toString().substring(1, strs.toString().length()-1));
-			//parseFormattedValue(str,CURRENCY_INDIAN_2DECIMAL.);
-			//System.out.println(NumberFormat.getIntegerInstance().parse(str).toString());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//System.out.println(formatNum);
-		 *
-*/
-		/*getNextAlphabetCharacter("A");
-		String val = "1407120000";
-		Integer.valueOf(val);
-
-		Double answer = 5.0;
-		DecimalFormat df = new DecimalFormat("###.#");
-		System.out.println(df.format(answer));
-		*/
-
-
-        double testRange = 0.500;
-        System.out.println(getDoubleValueGiveDecimalOnlyIfHaveDecimal(testRange));
-
-		/*int i = (int)testRange;
-		double abs = Math.abs(testRange-i);
-		System.out.println(abs);*/
-
     }
 
     public static boolean getBoolean(int integer) {
@@ -837,9 +789,6 @@ public class NumberUtil {
     }
 
     public static Integer[] getPreviousAndNextMultiple(double number, double lowestValue, double multiple) {
-        /*
-         * Handled only for positive numbers
-         */
 
         Integer[] previousAndNextMultiple = new Integer[2];
         double divideValue = number / multiple;
