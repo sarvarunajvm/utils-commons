@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.kordamp.gradle.java-project' version '0.46.0'
     id 'org.jreleaser' version '0.5.0'
-    id 'com.gorylenko.gradle-git-properties' version '2.2.2'
 }
 
 group 'com.github.sarvarunajvm'
@@ -22,25 +21,8 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-gitProperties {
-    gitPropertiesName = "Version.properties"
-    keys = ['git.branch', 'git.commit.id', 'git.commit.time', 'git.commit.id.describe', 'git.closest.tag.name', 'git.closest.tag.commit.count', 'git.build.version']
-    extProperty = 'gitProps' // git properties will be put in a map at project.ext.gitProps
-    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
-    dateFormatTimeZone = "IST"
-}
-generateGitProperties.outputs.upToDateWhen { false }
 
-task printGitProperties(dependsOn: 'generateGitProperties') {
-    // make sure generateGitProperties task to execute before accessing generated properties
-    doLast {
-        version = project.ext.gitProps['git.closest.tag.name'] + "." + project.ext.gitProps['git.closest.tag.commit.count']
-        println "Version : " + version
-        println "git.commit.id.describe=" + project.ext.gitProps['git.commit.id.describe']
-    }
-}
 jar {
-    dependsOn printGitProperties
     enabled = true
 }
 
@@ -99,7 +81,7 @@ jreleaser {
             }
             changelog {
                 enabled = true
-                sort = 'ASC'
+                sort = 'DESC'
                 links = false
                 formatted = 'ALWAYS'
                 change = '- {{commitShortHash}} {{commitTitle}}'
