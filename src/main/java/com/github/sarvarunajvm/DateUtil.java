@@ -245,13 +245,16 @@ public class DateUtil {
         return object;
     }
 
-    public LocalDate parseString(String dateString, String format) {
-        LocalDate date = null;
-        DateTimeFormatter formatter = null;
-        if (StringUtil.isNotNullOrEmpty(dateString)
-                && StringUtil.isNotNullOrEmpty(format)) {
-            formatter = DateTimeFormatter.ofPattern(format);
-            date = LocalDate.parse(dateString, formatter);
+    public Date parseString(String dateString, String format) {
+        Date date = null;
+        DateFormat formatter = null;
+        if (StringUtil.isNotNullOrEmpty(dateString) && StringUtil.isNotNullOrEmpty(format)) {
+            try {
+                formatter = new SimpleDateFormat(format);
+                date = (Date) formatter.parse(dateString);
+            } catch (ParseException e) {
+                System.out.println("Exception :" + e);
+            }
             clearVariables(formatter);
         }
         return date;
