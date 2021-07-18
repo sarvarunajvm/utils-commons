@@ -38,7 +38,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Build
-        run: ./gradlew jar
+        run: ./gradlew build -S
 
       - name: Show Reports
         uses: actions/upload-artifact@v1
