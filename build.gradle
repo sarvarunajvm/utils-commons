@@ -2,17 +2,16 @@ plugins {
     id 'java'
     id 'org.kordamp.gradle.java-project' version '0.46.0'
     id 'org.jreleaser' version '0.5.0'
+    id 'com.gorylenko.gradle-git-properties' version '2.2.2'
 }
 
 group 'com.github.sarvarunajvm'
-version '0.0.1'
+version = '0.0.1'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
-}
-
-jar {
-    enabled = true
 }
 
 dependencies {
@@ -22,6 +21,27 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+gitProperties {
+    gitPropertiesName = "Version.properties"
+    keys = ['git.branch', 'git.commit.id', 'git.commit.time', 'git.commit.id.describe', 'git.closest.tag.name', 'git.closest.tag.commit.count', 'git.build.version']
+    extProperty = 'gitProps' // git properties will be put in a map at project.ext.gitProps
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "IST"
+}
+generateGitProperties.outputs.upToDateWhen { false }
+
+task printGitProperties(dependsOn: 'generateGitProperties') {
+    // make sure generateGitProperties task to execute before accessing generated properties
+    doLast {
+        version = project.ext.gitProps['git.closest.tag.name'] + "." + project.ext.gitProps['git.closest.tag.commit.count']
+        println "Version : " + version
+        println "git.commit.id.describe=" + project.ext.gitProps['git.commit.id.describe']
+    }
+}
+jar {
+    dependsOn printGitProperties
+    enabled = true
 }
 
 config {
@@ -63,17 +83,12 @@ config {
 }
 
 jreleaser {
-    assemble {
-        enabled = true
-    }
     release {
         github {
             owner = 'sarvarunajvm'
             overwrite = true
             host = 'github.com'
             token = System.getenv('SECRET_TOKEN')
-            tagName = 'v1.0.1'
-            releaseName = 'Release v1.0.1'
             branch = 'main'
             commitAuthor {
                 name = 'releaserbot'
