@@ -83,6 +83,9 @@ config {
 }
 
 jreleaser {
+    assemble {
+        enabled = true
+    }
     release {
         github {
             owner = 'sarvarunajvm'
