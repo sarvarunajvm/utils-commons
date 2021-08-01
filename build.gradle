@@ -1,7 +1,6 @@
 plugins {
     id 'java'
-    id 'org.kordamp.gradle.java-project' version '0.46.0'
-    id 'org.jreleaser' version '0.5.0'
+    id 'maven-publish'
 }
 
 group 'com.github.sarvarunajvm'
@@ -26,145 +25,20 @@ jar {
     enabled = true
 }
 
-config {
-    info {
-        name = 'utils-commons'
-        vendor = 'github'
-        description = 'sarvarunajvm'
-        inceptionYear = '2021'
-        tags = ['release']
-
-        links {
-            website = "https://github.com/sarvarunajvm/${project.rootProject.name}"
-            issueTracker = "https://github.com/sarvarunajvm/${project.rootProject.name}/issues"
-            scm = "https://github.com/sarvarunajvm/${project.rootProject.name}.git"
-        }
-
-        scm {
-            url = "https://github.com/sarvarunajvm/${project.rootProject.name}"
-            connection = "scm:git:https://github.com/sarvarunajvm/${project.rootProject.name}.git"
-            developerConnection = "scm:git:git@github.com:sarvarunajvm/${project.rootProject.name}.git"
-        }
-
-        people {
-            person {
-                id = 'sarvarunajvm'
-                name = 'Saravanan Kalimuthu'
-                roles = ['developer', 'author']
-            }
-        }
-
-        licensing {
-            licenses {
-                license {
-                    id = 'Apache-2.0'
-                }
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/sarvarunajvm/utils-commons")
+            credentials {
+                username(System.getenv("USERNAME"))
+                password(System.getenv("JRELEASER_GITHUB_TOKEN"))
             }
         }
     }
-}
-
-jreleaser {
-    assemble {
-        enabled = true
-    }
-    release {
-        github {
-            owner = 'sarvarunajvm'
-            overwrite = true
-            host = 'github.com'
-            token = System.getenv('SECRET_TOKEN')
-            branch = 'main'
-            commitAuthor {
-                name = 'releaserbot'
-                email = 'releaser@jvm.org'
-            }
-            changelog {
-                enabled = true
-                sort = 'DESC'
-                links = false
-                formatted = 'ALWAYS'
-                change = '- {{commitShortHash}} {{commitTitle}}'
-                content = '#Changelog\n\n{{changelogChanges}}\n{{changelogContributors}}'
-
-                // Defines rules that apply labels to changes.
-                // Matchers are evaluated independently; the label will
-                // be set if at least one of the matchers meets the criteria.
-                //
-                labeler {
-                    // The label to be applied.
-                    //
-                    label = 'issue'
-
-                    // Matches the text of the first commit line.
-                    //
-                    title = '^fix:'
-
-                    // Matches the full text of the commit.
-                    //
-                    body = 'Fixes #'
-                }
-
-                // Groups changes by category.
-                // Defaults are shown.
-                //
-                category {
-                    title = '🚀 Features'
-                    labels = [
-                            'feature',
-                            'enhancement'
-                    ]
-                }
-                category {
-                    title = '🐛 Bug Fixes'
-                    labels = [
-                            'bug',
-                            'fix'
-                    ]
-                }
-            }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
         }
     }
-//    announce {
-    //
-//        twitter {
-//            active =  true
-//            connectTimeout = 20
-//            readTimeout = 60
-
-    // The consumer key.
-    // If left unspecified, the `JRELEASER_TWITTER_CONSUMER_KEY`
-    // environment variable must be defined.
-    //
-//            consumerKey = JRELEASER_TWITTER_CONSUMER_KEY
-
-    // The consumer token.
-    // If left unspecified, the `JRELEASER_TWITTER_CONSUMER_TOKEN`
-    // environment variable must be defined.
-    //
-//            consumerToken = '__DO_NOT_SET_HERE__'
-
-    // The access token.
-    // If left unspecified, the `JRELEASER_TWITTER_ACCESS_TOKEN`
-    // environment variable must be defined.
-    //
-//            accessToken = '__DO_NOT_SET_HERE__'
-
-    // The access token secret.
-    // If left unspecified, the `JRELEASER_TWITTER_ACCESS_TOKEN`_SECRET`
-    // environment variable must be defined.
-    //
-//            accessTokenSecret = '__DO_NOT_SET_HERE__'
-
-    // The announcement message.
-    // Review the available Name Templates.
-    //
-//            status = ' {{projectNameCapitalized}} {{projectVersion}} has been released! {{releaseNotesUrl}}'
-
-    // Additional properties used when evaluating templates.
-    // Key will be capitalized and prefixed with `twitter`, i.e, `twitterFoo`.
-    //
-//            extraProperties.put('foo', 'bar')
-//        }
-//    }
 }
